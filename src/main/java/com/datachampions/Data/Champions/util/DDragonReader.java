@@ -3,6 +3,8 @@ package com.datachampions.Data.Champions.util;
 import com.datachampions.Data.Champions.entities.champion.ChampImage;
 import com.datachampions.Data.Champions.entities.champion.Champion;
 import com.datachampions.Data.Champions.entities.item.Item;
+import com.datachampions.Data.Champions.entities.rune.Rune;
+import com.datachampions.Data.Champions.enums.RuneTree;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.datachampions.Data.Champions.dto.championDto.ChampionDataDto;
@@ -15,6 +17,49 @@ import java.util.*;
 public class DDragonReader {
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+
+    public List<Rune> parseRunes(File runeFile) throws Exception {
+        JsonNode root = mapper.readTree(runeFile);
+
+        if (!root.isArray() || root.size() == 0) {
+            System.out.println("Runes array is empty!");
+            return new ArrayList<>();
+        }
+
+        List<Rune> runes = new ArrayList<>();
+
+        for (JsonNode treeNode : root) { // cada estilo de runa
+            int treeId = treeNode.get("id").asInt();
+            RuneTree treeEnum = Arrays.stream(RuneTree.values())
+                    .filter(t -> t.getId() == treeId)
+                    .findFirst()
+                    .orElse(null); // ou lance exceção se preferir
+
+            JsonNode slotsNode = treeNode.get("slots");
+            if (slotsNode != null && slotsNode.isArray()) {
+                for (JsonNode slotNode : slotsNode) {
+                    JsonNode runesNode = slotNode.get("runes");
+                    if (runesNode != null && runesNode.isArray()) {
+                        for (JsonNode runeNode : runesNode) {
+                            Rune rune = mapper.treeToValue(runeNode, Rune.class);
+
+                            // preencher o enum tree
+                            rune.setRuneTree(treeEnum);
+
+                            // limpar descrições
+                            rune.setShortDesc(cleanText(rune.getShortDesc()));
+                            rune.setLongDesc(cleanText(rune.getLongDesc()));
+
+                            runes.add(rune);
+                        }
+                    }
+                }
+            }
+        }
+
+        return runes;
+    }
 
     public List<Item> parseItems(File itemFile) throws Exception {
         JsonNode root = mapper.readTree(itemFile);
@@ -36,6 +81,8 @@ public class DDragonReader {
             item.setSellGold(entry.getValue().get("gold").get("sell").asInt());
             item.setTotalGold(entry.getValue().get("gold").get("total").asInt());
 
+            item.setDescription(cleanText(item.getDescription()));
+
             items.add(item);
         }
         return items;
@@ -55,6 +102,17 @@ public class DDragonReader {
             champs.add(champ);
         }
         return champs;
+    }
+    
+    private String cleanText(String desc) {
+        return desc.replaceAll("<br\\s*/?>", "\n")
+                .replaceAll("<.*?>", "")
+                .replaceAll("<[^>]+>", "")
+                .replaceAll("<(/?magicDamage)>", "")
+                .replaceAll("<(/?trueDamage)>", "")
+                .replaceAll("<(/?status)>", "")
+                .replaceAll("<(/?attention)>", "");
+
     }
 
 
