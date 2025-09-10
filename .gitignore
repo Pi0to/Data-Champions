@@ -1,1 +1,10 @@
 resources/DataDragon/
+
+# Node.js
+node_modules/
+
+# Logs
+*.log
+
+# Build
+dist/

@@ -1,23 +1,45 @@
 package com.datachampions.Data.Champions.util;
 
-import com.datachampions.Data.Champions.entities.ChampImage;
-import com.datachampions.Data.Champions.entities.Champion;
+import com.datachampions.Data.Champions.entities.champion.ChampImage;
+import com.datachampions.Data.Champions.entities.champion.Champion;
+import com.datachampions.Data.Champions.entities.item.Item;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.datachampions.Data.Champions.dto.ChampionDataDto;
+import com.datachampions.Data.Champions.dto.championDto.ChampionDataDto;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class DDragonReader {
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    public List<Item> parseItems(File itemFile) throws Exception {
+        JsonNode root = mapper.readTree(itemFile);
+        JsonNode data = root.get("data");
+
+        if (data == null || data.isEmpty()) {
+            System.out.println("Data is empty!");;
+        }
+
+        List<Item> items = new ArrayList<>();
+
+        for (Iterator<Map.Entry<String, JsonNode>> it = data.fields(); it.hasNext(); ) {
+
+            Map.Entry<String, JsonNode> entry = it.next();
+
+            Item item = mapper.treeToValue(entry.getValue(), Item.class);
+
+            item.setKey(Integer.valueOf(entry.getKey()));
+            item.setSellGold(entry.getValue().get("gold").get("sell").asInt());
+            item.setTotalGold(entry.getValue().get("gold").get("total").asInt());
+
+            items.add(item);
+        }
+        return items;
+    }
 
     public List<Champion> parseChampions(File championFile) throws Exception {
         JsonNode root = mapper.readTree(championFile);
@@ -35,36 +57,5 @@ public class DDragonReader {
         return champs;
     }
 
-    private Champion dtoToChampion(ChampionDataDto dto) {
 
-        if(dto == null) System.out.println("DTO is null");
-        else if (dto.getAnyChampion() == null) System.out.println("DTO data champ is null");
-
-
-        Champion champ = new Champion();
-
-        ChampImage image = getChampImage(dto);
-
-
-        champ.setId(dto.getAnyChampion().getId());
-        champ.setKey(Integer.parseInt(dto.getAnyChampion().getKey()));
-        champ.setName(dto.getAnyChampion().getName());
-        champ.setTitle(dto.getAnyChampion().getTitle());
-        champ.setImage(image);
-
-        return champ;
-    }
-
-    private static ChampImage getChampImage(ChampionDataDto dto) {
-        ChampImage image = new ChampImage();
-
-        image.setFull(dto.getAnyChampion().getImage().getFull());
-        image.setSprite(dto.getAnyChampion().getImage().getSprite());
-        image.setGroup(dto.getAnyChampion().getImage().getGroup());
-        image.setX(dto.getAnyChampion().getImage().getX());
-        image.setY(dto.getAnyChampion().getImage().getY());
-        image.setW(dto.getAnyChampion().getImage().getW());
-        image.setH(dto.getAnyChampion().getImage().getH());
-        return image;
-    }
 }

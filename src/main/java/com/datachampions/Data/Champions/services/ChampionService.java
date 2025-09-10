@@ -1,10 +1,9 @@
 package com.datachampions.Data.Champions.services;
 
 
-import com.datachampions.Data.Champions.entities.Champion;
+import com.datachampions.Data.Champions.entities.champion.Champion;
 import com.datachampions.Data.Champions.repositories.ChampionRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
