@@ -4,6 +4,7 @@ import com.datachampions.Data.Champions.entities.champion.ChampImage;
 import com.datachampions.Data.Champions.entities.champion.Champion;
 import com.datachampions.Data.Champions.entities.item.Item;
 import com.datachampions.Data.Champions.entities.rune.Rune;
+import com.datachampions.Data.Champions.entities.sumonnerSpell.SummonerSpell;
 import com.datachampions.Data.Champions.enums.RuneTree;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,25 @@ import java.util.*;
 public class DDragonReader {
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    public List<SummonerSpell> parseSpells(File spellFile) throws Exception {
+        JsonNode root = mapper.readTree(spellFile);
+        JsonNode data = root.get("data");
+
+        List<SummonerSpell> spells = new ArrayList<>();
+
+        for(Iterator<Map.Entry<String, JsonNode>> it = data.fields(); it.hasNext(); ) {
+
+            JsonNode node = it.next().getValue();
+            SummonerSpell spell = mapper.treeToValue(node, SummonerSpell.class);
+
+            spell.setDescription(cleanText(spell.getDescription()));
+
+            spells.add(spell);
+        }
+        return spells;
+    }
+
 
 
     public List<Rune> parseRunes(File runeFile) throws Exception {

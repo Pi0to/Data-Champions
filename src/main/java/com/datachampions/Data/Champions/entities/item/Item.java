@@ -22,6 +22,9 @@ public class Item {
     private Integer totalGold;
     private Integer sellGold;
 
+    @Embedded
+    private ItemImage img;
+
     @ElementCollection
     @CollectionTable(name = "item_maps", joinColumns = @JoinColumn(name = "item_id"))
     @MapKeyColumn(name = "map_key")
@@ -31,14 +34,23 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer key, String name, String description, String plaintext, Integer totalGold, Integer sellGold, Map<Integer, Boolean> maps) {
+    public Item(Integer key, String name, String description, String plaintext, Integer totalGold, Integer sellGold, ItemImage img, Map<Integer, Boolean> maps) {
         this.key = key;
         this.name = name;
         this.description = description;
         this.plaintext = plaintext;
         this.totalGold = totalGold;
         this.sellGold = sellGold;
+        this.img = img;
         this.maps = maps;
+    }
+
+    public ItemImage getImg() {
+        return img;
+    }
+
+    public void setImg(ItemImage img) {
+        this.img = img;
     }
 
     public Integer getKey() {

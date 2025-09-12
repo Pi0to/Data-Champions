@@ -1,10 +1,8 @@
-package com.datachampions.Data.Champions.entities.champion;
+package com.datachampions.Data.Champions.entities.item;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
-
-
-public class ChampImage {
+public class ItemImage {
 
     private String full;
     private String sprite;
@@ -15,11 +13,10 @@ public class ChampImage {
     private Integer w;
     private Integer h;
 
-    public ChampImage() {
+    public ItemImage() {
     }
 
-    public ChampImage(String full, String sprite, String group, Integer x, Integer y, Integer w, Integer h) {
-
+    public ItemImage(String full, String sprite, String group, Integer x, Integer y, Integer w, Integer h) {
         this.full = full;
         this.sprite = sprite;
         this.group = group;
@@ -28,7 +25,6 @@ public class ChampImage {
         this.w = w;
         this.h = h;
     }
-
 
     public String getFull() {
         return full;
@@ -85,5 +81,4 @@ public class ChampImage {
     public void setH(Integer h) {
         this.h = h;
     }
-
 }
