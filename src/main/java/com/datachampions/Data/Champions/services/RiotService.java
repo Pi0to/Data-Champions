@@ -6,6 +6,9 @@ import com.datachampions.Data.Champions.entities.match.Match;
 import com.datachampions.Data.Champions.entities.summoner.Summoner;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -15,23 +18,29 @@ import java.util.List;
 @Service
 public class RiotService {
 
-    private final WebClient webClient;
+    private final static Logger logger = LoggerFactory.getLogger(RiotService.class);
+
+    private final WebClient regionalWebClient;
+    private final WebClient platformWebClient;
     private final ObjectMapper objectMapper;
 
     private static final String API_KEY = "RGAPI-b82f152b-eb43-43f0-8c91-5981f6e1ac4e";
     private static final String BASE_URL = "https://api.riotgames.com";
 
-    public RiotService(WebClient webClient, ObjectMapper objectMapper) {
-        this.webClient = webClient;
+    public RiotService(@Qualifier("regionalWebClient") WebClient regionalWebClient,
+                       @Qualifier("platformWebClient") WebClient platformWebClient,
+                       ObjectMapper objectMapper) {
+
+        this.regionalWebClient = regionalWebClient;
+        this.platformWebClient = platformWebClient;
+
         this.objectMapper = objectMapper;
     }
 
     public List<String> getChallengerSummoners() {
-        String url = BASE_URL + "/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5";
 
-        String responseBody = webClient.get()
-                .uri(url)
-                .header("X-Riot-Token", API_KEY)
+        String responseBody = regionalWebClient.get()
+                .uri("/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -58,11 +67,9 @@ public class RiotService {
     }
 
     public List<String> getMatchIdsByPuuid(String puuid, int count) {
-        String url = BASE_URL + "/lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + count;
 
-        return webClient.get()
-                .uri(url)
-                .header("X-Riot-Token", API_KEY)
+        return platformWebClient.get()
+                .uri("/lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + count)
                 .retrieve()
                 .bodyToFlux(String.class)
                 .collectList()
@@ -70,15 +77,14 @@ public class RiotService {
     }
 
     public Match getMatchById(String matchId) {
-        String url = BASE_URL + "/lol/match/v5/matches/" + matchId;
 
-        String responseBody = webClient.get()
-                .uri(url)
-                .header("X-Riot-Token", API_KEY)
+        logger.info(">>> [CLIENT] Montando URL final com o ID: '{}'", matchId);
+
+        String responseBody = platformWebClient.get()
+                .uri("/lol/match/v5/matches/" + matchId)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
 
         try {
 

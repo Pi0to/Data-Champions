@@ -20,7 +20,7 @@ public class Match {
 
     private String gameVersion;
 
-    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "match", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participant> participants;
 
     public Match() {
