@@ -13,6 +13,7 @@ import java.util.Objects;
 public class Rune {
 
     @Id
+    @Column(name = "rune_id")
     private Integer id;
     @Column(name = "rune_key")
     private String key;

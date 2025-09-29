@@ -5,10 +5,6 @@ import com.datachampions.Data.Champions.entities.summoner.Summoner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface ChampionRepository extends JpaRepository<Champion, String> {
-
-    Optional<Champion> findByName(String name);
+public interface SummonerRepository extends JpaRepository<Summoner, String> {
 }
