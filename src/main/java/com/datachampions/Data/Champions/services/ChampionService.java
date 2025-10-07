@@ -21,4 +21,12 @@ public class ChampionService {
     public void saveAll(List<Champion> champions) {
         championRepository.saveAll(champions);
     }
+
+    public Champion findById(String id) {
+        return championRepository.findById(id).orElseThrow(() -> new RuntimeException("Champion not found"));
+    }
+
+    public Champion findByName(String name) {
+        return championRepository.findByName(name).orElseThrow(() -> new RuntimeException("Champion not found"));
+    }
 }

@@ -6,10 +6,10 @@ import com.datachampions.Data.Champions.entities.rune.Rune;
 import com.datachampions.Data.Champions.entities.summoner.Summoner;
 import com.datachampions.Data.Champions.entities.sumonnerSpell.SummonerSpell;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Participant {
@@ -22,20 +22,17 @@ public class Participant {
     private Summoner summoner;
 
     @ManyToOne
-    @JoinColumn(name = "champion_id", referencedColumnName = "id")
+    @JoinColumn(name = "champion_id", referencedColumnName = "id", nullable = false)
     private Champion champion;
 
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<Rune> runes;
+    @ManyToMany
+    private Set<Rune> runes = new HashSet<>();
 
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<Item> items;
+    @ManyToMany
+    private Set<Item> items = new HashSet<>();
 
-    @OneToMany
-    @Cascade(CascadeType.ALL)
-    private List<SummonerSpell> summonerSpells;
+    @ManyToMany
+    private Set<SummonerSpell> summonerSpells = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "match_id")
@@ -57,7 +54,7 @@ public class Participant {
     public Participant() {
     }
 
-    public Participant(Long id, Summoner summoner, Champion champion, List<Rune> runes, List<Item> items, List<SummonerSpell> summonerSpells, Match match, boolean win, int kills, int deaths, int assists, int goldEarned, int totalMinionsKilled, int neutralMinionsKilled, int visionScore, double kda, String role, String lane) {
+    public Participant(Long id, Summoner summoner, Champion champion, Set<Rune> runes, Set<Item> items, Set<SummonerSpell> summonerSpells, Match match, boolean win, int kills, int deaths, int assists, int goldEarned, int totalMinionsKilled, int neutralMinionsKilled, int visionScore, double kda, String role, String lane) {
         this.id = id;
         this.summoner = summoner;
         this.champion = champion;
@@ -100,19 +97,19 @@ public class Participant {
         this.champion = champion;
     }
 
-    public List<Rune> getRunes() {
+    public Set<Rune> getRunes() {
         return runes;
     }
 
-    public void setRunes(List<Rune> runes) {
+    public void setRunes(Set<Rune> runes) {
         this.runes = runes;
     }
 
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(Set<Item> items) {
         this.items = items;
     }
 
@@ -120,11 +117,11 @@ public class Participant {
         return match;
     }
 
-    public List<SummonerSpell> getSummonerSpells() {
+    public Set<SummonerSpell> getSummonerSpells() {
         return summonerSpells;
     }
 
-    public void setSummonerSpells(List<SummonerSpell> summonerSpells) {
+    public void setSummonerSpells(Set<SummonerSpell> summonerSpells) {
         this.summonerSpells = summonerSpells;
     }
 

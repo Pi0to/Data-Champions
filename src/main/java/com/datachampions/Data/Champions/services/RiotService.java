@@ -1,18 +1,28 @@
 package com.datachampions.Data.Champions.services;
 
-import com.datachampions.Data.Champions.dto.importDto.MatchImportDto;
-import com.datachampions.Data.Champions.dto.importDto.ParticipantImportDto;
+import com.datachampions.Data.Champions.dto.importDto.*;
+import com.datachampions.Data.Champions.entities.champion.Champion;
+import com.datachampions.Data.Champions.entities.item.Item;
 import com.datachampions.Data.Champions.entities.match.Match;
+import com.datachampions.Data.Champions.entities.match.Participant;
+import com.datachampions.Data.Champions.entities.rune.Rune;
 import com.datachampions.Data.Champions.entities.summoner.Summoner;
+import com.datachampions.Data.Champions.entities.sumonnerSpell.SummonerSpell;
+import com.datachampions.Data.Champions.enums.GameMode;
+import com.datachampions.Data.Champions.enums.QueueType;
+import com.datachampions.Data.Champions.repositories.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -22,19 +32,35 @@ public class RiotService {
 
     private final WebClient regionalWebClient;
     private final WebClient platformWebClient;
+
     private final ObjectMapper objectMapper;
 
-    private static final String API_KEY = "RGAPI-b82f152b-eb43-43f0-8c91-5981f6e1ac4e";
-    private static final String BASE_URL = "https://api.riotgames.com";
+
+    private final SummonerRepository summonerRepository;
+    private final ChampionRepository championRepository;
+    private final RuneRepository runeRepository;
+    private final ItemRepository itemRepository;
+    private final SSpellRepository sSpellRepository;
+    private final ChampionService championService;
+
+    private final SummonerService summonerService;
+
 
     public RiotService(@Qualifier("regionalWebClient") WebClient regionalWebClient,
                        @Qualifier("platformWebClient") WebClient platformWebClient,
-                       ObjectMapper objectMapper) {
+                       ObjectMapper objectMapper, SummonerRepository summonerRepository, ChampionRepository championRepository, RuneRepository runeRepository, ItemRepository itemRepository, SSpellRepository sSpellRepository, ChampionService championService, SummonerService summonerService) {
 
         this.regionalWebClient = regionalWebClient;
         this.platformWebClient = platformWebClient;
 
         this.objectMapper = objectMapper;
+        this.summonerRepository = summonerRepository;
+        this.championRepository = championRepository;
+        this.runeRepository = runeRepository;
+        this.itemRepository = itemRepository;
+        this.sSpellRepository = sSpellRepository;
+        this.championService = championService;
+        this.summonerService = summonerService;
     }
 
     public List<String> getChallengerSummoners() {
@@ -71,12 +97,11 @@ public class RiotService {
         return platformWebClient.get()
                 .uri("/lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + count)
                 .retrieve()
-                .bodyToFlux(String.class)
-                .collectList()
+                .bodyToMono(new ParameterizedTypeReference<List<String>>() {})
                 .block();
     }
 
-    public Match getMatchById(String matchId) {
+    public MatchImportDto getMatchById(String matchId) {
 
         logger.info(">>> [CLIENT] Montando URL final com o ID: '{}'", matchId);
 
@@ -106,11 +131,25 @@ public class RiotService {
             );
 
 
-            return matchImportDto.toEntity();
+            return matchImportDto;
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+    public String getSummonerByPuuid(String puuid) {
+
+        return  regionalWebClient.get()
+                .uri("/lol/summoner/v4/summoners/by-puuid/" + puuid)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+    }
+
+
+
+
 }
