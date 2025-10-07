@@ -10,4 +10,6 @@ public class DataChampionsApplication {
 		SpringApplication.run(DataChampionsApplication.class, args);
 	}
 
+
+
 }

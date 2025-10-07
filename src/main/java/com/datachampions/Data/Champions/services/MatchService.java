@@ -10,6 +10,7 @@ import com.datachampions.Data.Champions.entities.summoner.Summoner;
 import com.datachampions.Data.Champions.entities.sumonnerSpell.SummonerSpell;
 import com.datachampions.Data.Champions.enums.GameMode;
 import com.datachampions.Data.Champions.enums.QueueType;
+import com.datachampions.Data.Champions.exceptions.UnavaibleModeException;
 import com.datachampions.Data.Champions.repositories.ItemRepository;
 import com.datachampions.Data.Champions.repositories.MatchRepository;
 import com.datachampions.Data.Champions.repositories.RuneRepository;
@@ -60,7 +61,17 @@ public class MatchService {
             return;
         }
 
-        Match match = dtoToMatch( riotService.getMatchById(matchId) );
+        MatchImportDto dto = riotService.getMatchById(matchId);
+
+        Match match;
+
+        try{
+            match = dtoToMatch(dto);
+        } catch (UnavaibleModeException e){
+            logger.warn("Match with ID " + matchId + " is in an unavailable game mode. Skipping.");
+            return;
+        }
+
 
         if(match == null){
             logger.warn("Match with ID " + matchId + " not found in Riot API.");
@@ -76,6 +87,10 @@ public class MatchService {
     private Match dtoToMatch(MatchImportDto dto) {
         Match match = new Match();
 
+        if(GameMode.valueOf(dto.gameMode()) == GameMode.CHERRY){
+            throw new UnavaibleModeException();
+        }
+
         match.setMatchId(dto.matchId());
         match.setGameMode(GameMode.valueOf(dto.gameMode()));
         match.setQueueType(QueueType.fromCode(dto.queueId()));
@@ -84,11 +99,14 @@ public class MatchService {
                 .stream()
                 .map(this::dtoToParticipant)
                 .toList());
+
+
         return match;
     }
 
     private Participant dtoToParticipant(ParticipantImportDto dto){
         Participant participant = new Participant();
+
 
 
         Summoner summoner = summonerService.findOrCreate(summonerService.toEntity( riotService.getSummonerByPuuid(dto.puuid()) ));

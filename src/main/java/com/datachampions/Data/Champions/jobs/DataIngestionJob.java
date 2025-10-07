@@ -15,6 +15,7 @@ import java.util.List;
 @Component
 public class DataIngestionJob {
 
+
     private static final Logger logger = LoggerFactory.getLogger(DataIngestionJob.class);
 
     private final RiotService riotService;
@@ -31,6 +32,9 @@ public class DataIngestionJob {
     public void fetchNewMatches(){
 
         logger.info("[START] Fetching new matches from Riot API");
+
+
+
 
         try{
             logger.info("Fetching challenger summoners...");
