@@ -63,10 +63,10 @@ public class RiotService {
         this.summonerService = summonerService;
     }
 
-    public List<String> getChallengerSummoners() {
+    public List<String> getSummonersByQueue(String queueType) {
 
         String responseBody = regionalWebClient.get()
-                .uri("/lol/league/v4/challengerleagues/by-queue/RANKED_SOLO_5x5")
+                .uri("/lol/league/v4/"+ queueType +"/by-queue/RANKED_SOLO_5x5")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

@@ -11,7 +11,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent url("../../img/bg/A6000000.png");
+  background: transparent url("../../image/bg/A6000000.png");
   background: none rgba(0, 0, 0, 0.65);
   _filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#A6000000, endColorstr=#A6000000); }
 
@@ -29,11 +29,11 @@
     width: 100%; }
     .rg-item-tree .treebox .treehead {
       width: 100%; }
-    .rg-item-tree .treebox .treeimg {
+    .rg-item-tree .treebox .treeimage {
       position: relative;
       margin: 0 auto;
       border: 1px solid black; }
-    .rg-item-tree .treebox .treeimg.selected {
+    .rg-item-tree .treebox .treeimage.selected {
       border: 1px solid #00ff00; }
     .rg-item-tree .treebox .branch {
       position: relative;
@@ -81,7 +81,7 @@
 .rg-box-modal {
   width: 400px;
   padding: 7px;
-  background: transparent url("../../img/bg/F5141416.png");
+  background: transparent url("../../image/bg/F5141416.png");
   background: none rgba(20, 20, 22, 0.96);
   _filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F5141416, endColorstr=#F5141416);
   border: 1.15px solid #686868;
@@ -104,7 +104,7 @@
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     overflow: hidden; }
-    .rg-box-modal.rg-display-item_modal .item-into .img {
+    .rg-box-modal.rg-display-item_modal .item-into .image {
       margin: 6px;
       float: left; }
   .rg-box-modal.rg-display-item_modal .rg-item-tree {
@@ -128,7 +128,7 @@
     .rg-box-modal.rg-display-item_modal .item-desc .title {
       position: relative;
       height: 64px; }
-      .rg-box-modal.rg-display-item_modal .item-desc .title img {
+      .rg-box-modal.rg-display-item_modal .item-desc .title image {
         position: absolute; }
       .rg-box-modal.rg-display-item_modal .item-desc .title .name {
         position: absolute;
@@ -154,7 +154,7 @@
 .rg-box-tooltip {
   width: 295px;
   padding: 7px;
-  background: transparent url("../../img/bg/F5141416.png");
+  background: transparent url("../../image/bg/F5141416.png");
   background: none rgba(20, 20, 22, 0.96);
   _filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F5141416, endColorstr=#F5141416);
   border: 1.15px solid #686868;
@@ -166,7 +166,7 @@
   text-align: left;
   min-height: 46px;
   z-index: 3000004; }
-  .rg-box-tooltip .img {
+  .rg-box-tooltip .image {
     float: left;
     height: 48px;
     width: 48px; }

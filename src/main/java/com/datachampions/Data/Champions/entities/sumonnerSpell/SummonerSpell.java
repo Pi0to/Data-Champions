@@ -1,6 +1,6 @@
 package com.datachampions.Data.Champions.entities.sumonnerSpell;
 
-import com.datachampions.Data.Champions.entities.champion.ChampImage;
+import com.datachampions.Data.Champions.entities.images.DDragonImage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -18,17 +18,17 @@ public class SummonerSpell {
     private Integer key;
 
     @Embedded
-    private ChampImage img;
+    private DDragonImage image;
 
     public SummonerSpell() {
     }
 
-    public SummonerSpell(String id, String name, String description, Integer key, ChampImage img) {
+    public SummonerSpell(String id, String name, String description, Integer key, DDragonImage image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.key = key;
-        this.img = img;
+        this.image = image;
     }
 
     public String getId() {
@@ -63,11 +63,11 @@ public class SummonerSpell {
         this.key = key;
     }
 
-    public ChampImage getImg() {
-        return img;
+    public DDragonImage getimage() {
+        return image;
     }
 
-    public void setImg(ChampImage img) {
-        this.img = img;
+    public void setimage(DDragonImage image) {
+        this.image = image;
     }
 }

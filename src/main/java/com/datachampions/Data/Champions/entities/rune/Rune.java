@@ -1,6 +1,6 @@
 package com.datachampions.Data.Champions.entities.rune;
 
-import com.datachampions.Data.Champions.entities.item.ItemImage;
+import com.datachampions.Data.Champions.entities.images.DDragonImage;
 import com.datachampions.Data.Champions.enums.RuneTree;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -26,13 +26,10 @@ public class Rune {
     @Enumerated(EnumType.STRING)
     private RuneTree runeTree;
 
-    @Embedded
-    private ItemImage img;
-
     public Rune() {
     }
 
-    public Rune(Integer id, String key, String icon, String name, String shortDesc, String longDesc, RuneTree runeTree, ItemImage img) {
+    public Rune(Integer id, String key, String icon, String name, String shortDesc, String longDesc, RuneTree runeTree) {
         this.id = id;
         this.key = key;
         this.icon = icon;
@@ -40,16 +37,8 @@ public class Rune {
         this.shortDesc = shortDesc;
         this.longDesc = longDesc;
         this.runeTree = runeTree;
-        this.img = img;
     }
 
-    public ItemImage getImg() {
-        return img;
-    }
-
-    public void setImg(ItemImage img) {
-        this.img = img;
-    }
 
     public Integer getId() {
         return id;

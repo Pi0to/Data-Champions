@@ -1,5 +1,6 @@
 package com.datachampions.Data.Champions.entities.item;
 
+import com.datachampions.Data.Champions.entities.images.DDragonImage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -23,7 +24,7 @@ public class Item {
     private Integer sellGold;
 
     @Embedded
-    private ItemImage img;
+    private DDragonImage image;
 
     @ElementCollection
     @CollectionTable(name = "item_maps", joinColumns = @JoinColumn(name = "item_id"))
@@ -34,23 +35,23 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer key, String name, String description, String plaintext, Integer totalGold, Integer sellGold, ItemImage img, Map<Integer, Boolean> maps) {
+    public Item(Integer key, String name, String description, String plaintext, Integer totalGold, Integer sellGold, DDragonImage image, Map<Integer, Boolean> maps) {
         this.key = key;
         this.name = name;
         this.description = description;
         this.plaintext = plaintext;
         this.totalGold = totalGold;
         this.sellGold = sellGold;
-        this.img = img;
+        this.image = image;
         this.maps = maps;
     }
 
-    public ItemImage getImg() {
-        return img;
+    public DDragonImage getimage() {
+        return image;
     }
 
-    public void setImg(ItemImage img) {
-        this.img = img;
+    public void setimage(DDragonImage image) {
+        this.image = image;
     }
 
     public Integer getKey() {

@@ -1,6 +1,6 @@
 package com.datachampions.Data.Champions.util;
 
-import com.datachampions.Data.Champions.entities.champion.ChampImage;
+import com.datachampions.Data.Champions.entities.images.DDragonImage;
 import com.datachampions.Data.Champions.entities.champion.Champion;
 import com.datachampions.Data.Champions.entities.item.Item;
 import com.datachampions.Data.Champions.entities.rune.Rune;

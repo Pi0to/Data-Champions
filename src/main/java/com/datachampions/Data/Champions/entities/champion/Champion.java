@@ -1,6 +1,7 @@
 package com.datachampions.Data.Champions.entities.champion;
 
 
+import com.datachampions.Data.Champions.entities.images.DDragonImage;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -19,12 +20,12 @@ public class Champion {
     private String title;
 
     @Embedded
-    private ChampImage image;
+    private DDragonImage image;
 
     public Champion() {
     }
 
-    public Champion(String id, Integer key, String name, String title, ChampImage image) {
+    public Champion(String id, Integer key, String name, String title, DDragonImage image) {
         this.id = id;
         this.key = key;
         this.name = name;
@@ -64,11 +65,11 @@ public class Champion {
         this.title = title;
     }
 
-    public ChampImage getImage() {
+    public DDragonImage getImage() {
         return image;
     }
 
-    public void setImage(ChampImage image) {
+    public void setImage(DDragonImage image) {
         this.image = image;
     }
 

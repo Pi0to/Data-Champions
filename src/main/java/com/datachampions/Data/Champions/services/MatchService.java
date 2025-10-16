@@ -71,10 +71,12 @@ public class MatchService {
             logger.warn("Match with ID " + matchId + " is in an unavailable game mode. Skipping.");
             return;
         }
-
-
         if(match == null){
             logger.warn("Match with ID " + matchId + " not found in Riot API.");
+        }
+
+        for(Participant participant : match.getParticipants()){
+            participant.setMatch(match);
         }
 
         matchRepository.save(match);

@@ -34,7 +34,7 @@ public class Participant {
     @ManyToMany
     private Set<SummonerSpell> summonerSpells = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private Match match;
 

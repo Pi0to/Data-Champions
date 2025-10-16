@@ -3,6 +3,7 @@ package com.datachampions.Data.Champions.enums;
 public enum GameMode {
 
     CLASSIC("Classic Summoner's Rift and Twisted Treeline games"),
+    SWIFTPLAY("5v5 Summoner's Rift games with modified rules"),
     CHERRY("Arena games"),
     ODIN("Dominion/Crystal Scar games"),
     ARAM("ARAM games"),

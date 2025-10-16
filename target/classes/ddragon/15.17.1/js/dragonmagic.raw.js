@@ -731,8 +731,8 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 		return testReturn(false);
 	};
 	
-	// Minor worker function for getImg and sizing
-	function getImgSize(val, size)
+	// Minor worker function for getimage and sizing
+	function getimageSize(val, size)
 	{
 		switch(size)
 		{
@@ -755,7 +755,7 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 	 * @param {String} [options.group=''] The group to pull the image from.
 	 * @param {String} [options.cap=''] The image file name.
 	 * @param {Number} [options.wrap=2]
-	 * The wrap level for the image. 2 places a ful html wrapper around it (<div> or <img). 1 is for
+	 * The wrap level for the image. 2 places a ful html wrapper around it (<div> or <image). 1 is for
 	 * sprites only and just places the rest of the sprite styling with it.
 	 * @param {String} [options.classes=''] Any additional classes to add to the wrapper.
 	 * @param {String} [options.attrs=''] Any additional attributes to add to the wrapper.
@@ -764,13 +764,13 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 	 * @param {String} [options.size=normal] Which sprite size we should use. Options are normal, small (36x36) and tiny (24x24)
 	 * @return {String} The generated image html.
 	 */
-	fn.getImg = function(obj,options)
+	fn.getimage = function(obj,options)
 	{
 		if(!obj.image)
 		{
-			return '<span data-rg-error="getImg('+obj.id+')"></span>';
+			return '<span data-rg-error="getimage('+obj.id+')"></span>';
 		}
-		var img = obj.image,
+		var image = obj.image,
 		// Defaults
 			basic = {
 				src: 'sprite',
@@ -779,7 +779,7 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 				group: '',
 				cap: '',
 				// Wrap is a "level" of ways to wrap the result
-				// 2 places a full html wrapper around it (<div> or <img>)
+				// 2 places a full html wrapper around it (<div> or <image>)
 				// 1 is for sprites only and just places the rest of the sprite styling with it.
 				wrap: 2,
 				
@@ -824,42 +824,42 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 		{
 			case 'sprite':
 				options.group = 'sprite';
-				options.cap = img.sprite;
+				options.cap = image.sprite;
 				if(options.wrap > 0)
 				{
-					pre = 'height:'+getImgSize(img.h, options.size)+'px; width:'+getImgSize(img.w, options.size)+'px; background: url(\'';
-					post = '\') -'+getImgSize(img.x, options.size)+'px -'+getImgSize(img.y, options.size)+'px no-repeat;';
+					pre = 'height:'+getimageSize(image.h, options.size)+'px; width:'+getimageSize(image.w, options.size)+'px; background: url(\'';
+					post = '\') -'+getimageSize(image.x, options.size)+'px -'+getimageSize(image.y, options.size)+'px no-repeat;';
 					if(options.wrap > 1)
 					{
-						pre = '<div class="img '+options.classes+'" style="'+pre;
+						pre = '<div class="image '+options.classes+'" style="'+pre;
 						post = post+'" '+options.attrs+'></div>';
 					}
 				}
 			break;
 			
 			case 'full':
-				options.group = img.group;
-				options.cap = img.full;
+				options.group = image.group;
+				options.cap = image.full;
 				if(options.wrap > 1)
 				{
-					pre = '<img class="'+options.classes+'" src="';
+					pre = '<image class="'+options.classes+'" src="';
 					post = '" '+options.attrs+' />';
 				}
 			break;
 			
 			case 'loading':
-				options.group = img.group + '/loading';
+				options.group = image.group + '/loading';
 			case 'splash':
 				if(options.group === '')
 				{
-					options.group = img.group + '/splash';
+					options.group = image.group + '/splash';
 				}
 				options.version = '';
 				options.cap = obj.id + '_' + options.skin + '.jpg';
 				
 				if(options.wrap > 1)
 				{
-					pre = '<img class="'+options.classes+'" src="';
+					pre = '<image class="'+options.classes+'" src="';
 					post = '" '+options.attrs+' />';
 				}
 			break;
@@ -873,9 +873,9 @@ Riot.DDragon.dataTypes = ['item','champion','mastery','rune','summoner','languag
 			options.cap = options.size + '_' + options.cap;
 		}
 		// The full construct:
-		// cdn version / img / (path?) group / cap
+		// cdn version / image / (path?) group / cap
 		
-		return pre+dd.m.cdn+options.version+'img/'+options.path+options.group+'/'+options.cap+post;
+		return pre+dd.m.cdn+options.version+'image/'+options.path+options.group+'/'+options.cap+post;
 	};
 	
 	/**
@@ -1785,12 +1785,12 @@ dd.model.prototype.getFull = function(id, remap, callback)
 }
 
 /**
- * @method getImg
+ * @method getimage
  * Returns an image path for a single data object.
  * @param {String} id The id of the desired data.
- * @param {Object} options The options object for creating the image. See {@link Riot.DDragon.fn#getImg}.
+ * @param {Object} options The options object for creating the image. See {@link Riot.DDragon.fn#getimage}.
  *
- * In addition to the standard options available to getImg, this version fills in the version parameter
+ * In addition to the standard options available to getimage, this version fills in the version parameter
  * automatically and it allows the wrap parameter to go up to 3.
  *
  * In case of wrap: 3, this adds data-rg-name="" and data-rg-id="" attributes automatically.
@@ -1798,7 +1798,7 @@ dd.model.prototype.getFull = function(id, remap, callback)
  * @param {Boolean} [remap] If we should use the alternate ID system associated with this model
  * for more details.
  */
-dd.model.prototype.getImg = function(id, options, remap)
+dd.model.prototype.getimage = function(id, options, remap)
 {
 	remap = remap || false;
 	if(remap)
@@ -1832,7 +1832,7 @@ dd.model.prototype.getImg = function(id, options, remap)
 			options = fn.rebase(options,basic);
 		}
 		
-		return fn.getImg(this.get(id),options);
+		return fn.getimage(this.get(id),options);
 	}
 	return '';
 };
@@ -2359,9 +2359,9 @@ dd.retryModel = function(action)
  * The actions, as well as the order they act in, are as follows:
  * remap_keys: Replace the data-rg-id attribute with an id remap of that key (important for champions)
  * empty: Empty the div
- * wrap={Number}: Set the wrap property of the images generated by img
- * img={String}: Append an image piece in to the element. String defines the image type
- * size={String}: The size of the sprite image (for img=sprite only). Default is 'normal'. 'small' and 'tiny' are also available.
+ * wrap={Number}: Set the wrap property of the images generated by image
+ * image={String}: Append an image piece in to the element. String defines the image type
+ * size={String}: The size of the sprite image (for image=sprite only). Default is 'normal'. 'small' and 'tiny' are also available.
  * query={String}: Query's the data via fn.objectDig and appends it to the element
  * no_inline: The div does not get an inline-block property set.
  * strip_data: This strips the data-rg tags used for modelAux from the element
@@ -2423,9 +2423,9 @@ dd.modelAux = function(el)
 				info.size = value;
 			});
 			
-			valueAux('img', function(value)
+			valueAux('image', function(value)
 			{
-				el.innerHTML += dd.useModel(info.name).getImg(info.id, {src: value, wrap: info.wrap, size: info.size});
+				el.innerHTML += dd.useModel(info.name).getimage(info.id, {src: value, wrap: info.wrap, size: info.size});
 			});
 			
 			valueAux('query', function(value)
@@ -2545,7 +2545,7 @@ fn.getCSS(dd.m.cdn+dd.m.css+'/css/view.css');
 // The default display fail
 dd.displayFail = function()
 {
-	return '<img src="'+dd.m.cdn+'img/global/load01.gif" />';
+	return '<image src="'+dd.m.cdn+'image/global/load01.gif" />';
 };
 
 /**
@@ -2680,10 +2680,10 @@ dd.addDisplay({
 		}
 		
 			// The top of the tree
-		r = this.model.getImg(data.id,{
+		r = this.model.getimage(data.id,{
 			size: (this.workingData.depth > 3 ? 'small' : 'normal' ),
 			wrap: 3,
-			classes: this.runClassTest(data)+(select?'selected ':'')+'treeimg'
+			classes: this.runClassTest(data)+(select?'selected ':'')+'treeimage'
 		});
 		
 		// Begin tree building if there are children
@@ -2726,7 +2726,7 @@ dd.addDisplay({
 	// Expects: Individual Item Object
 	success: function(data)
 	{
-		return this.model.getImg(data.id)+
+		return this.model.getimage(data.id)+
 		'<div class="info">'+
 			'<div class="name">'+data.name+'</div>'+
 			'<div class="description">'+data.description+'</div>'+
@@ -2767,14 +2767,14 @@ dd.addDisplay({
 			if(d)
 			{
 				var item = dd.useModel(d.name).get(d.id);
-				if(fn.hasClass(data.target, 'treeimg'))
+				if(fn.hasClass(data.target, 'treeimage'))
 				{
 					fn.removeClass(fn.$('.selected',  this.box)[0], 'selected');
 					fn.addClass(data.target, 'selected');
 					fn.$('.item-desc', this.box)[0].innerHTML = that.view.applyDisplay('item_modal_description',item);
 					fn.$('.item-into', this.box)[0].innerHTML = that.view.applyDisplay('item_modal_build',item);
 				}
-				else if(fn.hasClass(data.target,'intoimg'))
+				else if(fn.hasClass(data.target,'intoimage'))
 				{
 					that.redraw('getFull',d.id);
 				}
@@ -2793,7 +2793,7 @@ dd.addDisplay({
 	{
 		return ''+
 		'<div class="title">'+
-			this.model.getImg(data.id,{src:'full'})+
+			this.model.getimage(data.id,{src:'full'})+
 			'<div class="name">'+data.name+'</div>'+
 			'<div class="cost">'+fn.t('Cost_')+' <span class="gold">' + (data.specialRecipe !== 0 ? fn.t('SpecialRecipeLarge') : data.gold.total+' ('+data.gold.base+')') + '</span></div>'+
 		'</div>'+
@@ -2809,7 +2809,7 @@ dd.addDisplay({
 		for(i = 0, j = data.into.length; i < j; ++i)
 		{
 			// Wrap 3 includes the data-rg information for reactive hooking
-			r += this.model.getImg(data.into[i],{wrap:3,classes:'intoimg'});
+			r += this.model.getimage(data.into[i],{wrap:3,classes:'intoimage'});
 		}
 		return r;
 	}
@@ -2829,7 +2829,7 @@ dd.addDisplay({
 	// Expects: Individual Rune Object
 	success: function(data)
 	{
-		return this.model.getImg(data.id)+
+		return this.model.getimage(data.id)+
 		'<div class="info">'+
 			'<div class="name">'+data.name+'</div>'+
 			'<div class="description">'+data.description+'</div>'+
@@ -2867,7 +2867,7 @@ dd.addDisplay({
 				{
 					data = this.model.get(trunk[top][left].masteryId);
 					r += '<div class="mastery left'+left+' top'+top+'" data-rg-name="'+this.model.name+'" data-rg-id="'+data.id+'">'+
-						this.model.getImg(data.id)+
+						this.model.getimage(data.id)+
 					'</div>';
 				}
 			}
@@ -2890,7 +2890,7 @@ dd.addDisplay({
 	type: 'champion_tooltip',
 	success: function(data)
 	{
-		return this.model.getImg(data.id)+
+		return this.model.getimage(data.id)+
 			'<div class="info">'+
 				'<div class="name">'+data.name+'</div>'+
 				'<div class="description">'+data.blurb+'</div>'+
@@ -2912,7 +2912,7 @@ dd.addDisplay({
 	type: 'summoner_tooltip',
 	success: function(data)
 	{
-		return this.model.getImg(data.id)+
+		return this.model.getimage(data.id)+
 		'<div class="info">'+
 			'<div class="name">'+data.name+'</div>'+
 			'<div class="description">'+data.description+'</div>'+
